@@ -1,0 +1,104 @@
+#---------------------------------------------------
+# Spring Boot Specific
+#---------------------------------------------------
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Log files
+*.log
+logs/
+*.trace
+
+# Environment configuration
+# 민감한 DB 정보, API 키 등이 포함될 수 있으므로 Git에 올리지 않습니다.
+# 예시: application-dev.properties, application-prod.yml 등 프로파일별 설정 파일
+# 개발 시에는 application.properties 또는 application.yml을 사용하고,
+# 배포 시 환경 변수나 외부 설정 파일을 주입하는 것을 권장합니다.
+# 만약 application.properties/yml 자체에 민감한 정보가 있다면 .gitignore에 추가 고려
+# application.properties
+# application.yml
+
+# Crash dumps
+hs_err_pid*.log
+
+# Intellij Idea
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+*.launch
+.externalToolBuilders/
+
+# VS Code
+.vscode/
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Maven surefire report files
+**/surefire-reports/
+**/test-output/
+
+# 기타 빌드/캐시 파일
+.factorypath
+.classpath
+.project
+.metadata
+tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+.ds_store # macOS
+Thumbs.db # Windows
+
+#---------------------------------------------------
+# React Frontend Specific (assuming src/main/frontend)
+#---------------------------------------------------
+src/main/frontend/node_modules/
+src/main/frontend/build/     # Create React App build output
+src/main/frontend/dist/      # Vite build output
+
+# React environment variables - critical for sensitive info
+src/main/frontend/.env
+src/main/frontend/.env.local
+src/main/frontend/.env.development.local
+src/main/frontend/.env.test.local
+src/main/frontend/.env.production.local
+
+# React cache, logs, etc.
+src/main/frontend/.cache/
+src/main/frontend/coverage/
+src/main/frontend/*.log
+src/main/frontend/npm-debug.log*
+src/main/frontend/yarn-debug.log*
+src/main/frontend/yarn-error.log*
+
+#---------------------------------------------------
+# Operating System Specific
+#---------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
