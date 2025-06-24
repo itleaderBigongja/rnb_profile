@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: profile
+
+  datasource:
+    url: jdbc:oracle:thin@localhost:1521:XE
+    username: crnb001
+    password: rnb6707
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: oracle
+    database-platform: org.hibernate.dialect.OracleDialect
+
+
