@@ -9,6 +9,7 @@ spring:
     url: jdbc:oracle:thin@localhost:1521:XE
     username: crnb001
     password: rnb6707
+    driver-class-name: oracle.jdbc.OracleDriver
 
   jpa:
     hibernate:
@@ -16,5 +17,10 @@ spring:
     show-sql: true
     database: oracle
     database-platform: org.hibernate.dialect.OracleDialect
+logging:
+  level:
+    org.hibernate.sql: DEBUG            # Hibernate가 생성하는 SQL 쿼리 레벨을 DEBUG로 설정
+    org.hibernate.orm.jdbc.bind: TRACE  # SQL 쿼리 파라미터 바인딩 값 출력 (DEBUG보다 더 상세)
+    com.rnbsoft.profile: DEBUG          # 당신의 애플리케이션 패키지 로그 레벨 설정
 
 

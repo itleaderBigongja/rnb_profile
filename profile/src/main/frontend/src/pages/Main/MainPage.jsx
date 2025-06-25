@@ -127,17 +127,7 @@ const MainPage = () => {
             </header>
 
             {/* Portal Tabs */}
-            <div className="portal-tabs">
-                <div className="tab active">전사 Portal</div>
-                <div className="tab">My Portal</div>
-                <div className="tab-add">+</div>
-                <div className="portal-menu">
-                    <span>기본포탈</span>
-                    <span>환경설정</span>
-                    <span>알림설정</span>
-                    <span>공구이용</span>
-                </div>
-            </div>
+            <div className="portal-tabs"></div>
 
             {/* Main Content */}
             <main className="main-content">
@@ -152,20 +142,8 @@ const MainPage = () => {
                     {/* User Info */}
                     <div className="user-info-widget">
                         <div className="user-avatar-large"></div>
-                        <div className="user-name">탁우근 사원</div>
-                        <div className="user-department">인하용</div>
-                    </div>
-
-                    {/* Menu Items */}
-                    <div className="sidebar-menu">
-                        <div className="menu-item">
-                            <span>결재할 문서</span>
-                            <span className="count">0</span>
-                        </div>
-                        <div className="menu-item">
-                            <span>오늘의 일정</span>
-                            <span className="count">0</span>
-                        </div>
+                        <div className="user-name">알앤비 사원</div>
+                        <div className="user-department">인력풀</div>
                     </div>
                 </aside>
 
