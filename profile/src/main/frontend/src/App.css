@@ -1,3 +1,4 @@
+/* src/main/frontend/src/App.css */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,19 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* WelcomePage의 버튼 스타일 (추가) */
+.button {
+  background-color: #007bff; /* 파란색 배경 */
+  color: white; /* 흰색 글씨 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3; /* 호버 시 진한 파란색 */
 }

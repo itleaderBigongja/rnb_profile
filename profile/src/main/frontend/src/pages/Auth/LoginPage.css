@@ -1,0 +1,132 @@
+/* LoginPage.css */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+}
+
+.login-form-wrapper {
+    background-color: white;
+    padding: 300px;
+    border-radius: 5px;
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 300px;
+    border: 1px solid #e0e0e0;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.logo-image {
+    width: 300px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 0px;
+}
+
+.company-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1976d2;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group {
+    margin-bottom: 0px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 3px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #1976d2;
+}
+
+.login-input::placeholder {
+    color: #999;
+}
+
+.login-button {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #00acc1;
+}
+
+.login-button:active {
+    background-color: #0097a7;
+}
+
+.checkbox-group {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+
+.checkbox-input {
+    margin-right: 8px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.checkbox-text {
+    user-select: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+    .login-form-wrapper {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+
+    .logo-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .company-name {
+        font-size: 20px;
+    }
+}
