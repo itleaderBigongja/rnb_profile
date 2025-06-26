@@ -107,7 +107,7 @@ const MainPage = () => {
                 <div className="header-left">
                     <div className="logo-section">
                         <div className="header-logo">
-                            <img src="/src/assets/images/rnbsoft_logo.jpg"
+                            <img src="/src/assets/images/rnbsoft_logo2.jpg"
                                  alt="R&B 알엔비소프트 로고"
                                  className="logo-image"/>
                         </div>
