@@ -6,7 +6,7 @@ spring:
     name: profile
 
   datasource:
-    url: jdbc:oracle:thin@localhost:1521:XE
+    url: jdbc:oracle:thin:@localhost:1521:XE
     username: crnb001
     password: rnb6707
     driver-class-name: oracle.jdbc.OracleDriver
