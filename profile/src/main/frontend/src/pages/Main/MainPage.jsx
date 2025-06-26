@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import './MainPage.css';
+import React, { useState, useEffect, useRef } from 'react'; // useRef 임포트 추가
+import { useNavigate } from 'react-router-dom'; // useNavigate 임포트 추가
+import './MainPage.css'; // MainPage 전용 CSS 파일 (아래에 CSS 코드도 제공됩니다)
 
 const MainPage = () => {
+    const navigate = useNavigate(); // useNavigate 훅 초기화
+
     // 현재 날짜 상태
     const [currentDate, setCurrentDate] = useState(new Date());
     // 달력 표시용 년월 상태
     const [calendarDate, setCalendarDate] = useState(new Date());
     // 실시간 시간 표시용 상태
     const [currentTime, setCurrentTime] = useState(new Date());
+
+    // 드롭다운 메뉴의 표시 여부를 관리하는 상태
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 추가: 드롭다운 상태
+    // 드롭다운 영역 외부 클릭을 감지하기 위한 ref
+    const dropdownRef = useRef(null); // 추가: 드롭다운 ref
 
     // 실시간 시간 업데이트
     useEffect(() => {
@@ -17,6 +25,25 @@ const MainPage = () => {
 
         return () => clearInterval(timer);
     }, []);
+
+    // 드롭다운 외부 클릭 감지 useEffect
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // 드롭다운 영역 외부를 클릭했고, 드롭다운이 열려있다면
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false); // 드롭다운 닫기
+            }
+        };
+
+        // 문서 전체에 클릭 이벤트 리스너 추가
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // 컴포넌트 언마운트 시 이벤트 리스너 제거 (클린업)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []); // 빈 배열은 컴포넌트 마운트 시 한 번만 실행됨을 의미
+
 
     // 날짜 포맷팅 함수들
     const formatDate = (date) => {
@@ -97,6 +124,36 @@ const MainPage = () => {
         return days;
     };
 
+    // 드롭다운 토글 함수
+    const toggleDropdown = () => {
+        setIsDropdownOpen(prev => !prev);
+    };
+
+    // 로그아웃 핸들러 함수
+    const handleLogout = () => {
+        // 1. 로컬 스토리지 또는 세션 스토리지에서 사용자 정보 제거
+        localStorage.removeItem('loggedInUser'); // 예시: 로그인 사용자 정보를 저장했다면
+        localStorage.removeItem('authToken');    // 예시: JWT 토큰을 저장했다면
+
+        // 2. 드롭다운 닫기
+        setIsDropdownOpen(false);
+
+        // 3. 사용자에게 로그아웃 메시지 표시 (선택 사항)
+        alert('로그아웃 되었습니다.');
+
+        // 4. 로그인 페이지로 리디렉션
+        navigate('/login');
+    };
+
+    // '기본정보' 클릭 시 동작 (예시)
+    const handleBasicInfoClick = () => {
+        // 여기에 기본정보 페이지로 이동하거나 모달을 띄우는 로직 구현
+        alert('기본정보 페이지로 이동합니다. (구현 예정)');
+        setIsDropdownOpen(false); // 드롭다운 닫기
+        // navigate('/basic-info'); // 예시: 기본정보 페이지 라우팅이 있다면
+    };
+
+
     const calendarDays = generateCalendarDays();
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -127,7 +184,20 @@ const MainPage = () => {
                 </div>
                 <div className="header-right">
                     <div className="user-profile">
-                        <div className="profile-avatar"></div>
+                        {/* profile-avatar 클릭 시 드롭다운 토글 */}
+                        <div className="profile-avatar" onClick={toggleDropdown}>
+                            {/* 아바타 이미지 또는 아이콘 */}
+                            <img src="/src/assets/images/rnbsoft_logo.jpg" alt="User Avatar" className="avatar-image" />
+                        </div>
+                        {/* 드롭다운 메뉴 */}
+                        {isDropdownOpen && ( // isDropdownOpen이 true일 때만 렌더링
+                            <div className="dropdown-menu" ref={dropdownRef}> {/* ref 연결 */}
+                                <ul>
+                                    <li onClick={handleBasicInfoClick}>기본정보</li> {/* 기본정보 항목 */}
+                                    <li onClick={handleLogout}>로그아웃</li> {/* 로그아웃 항목 */}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
             </header>
