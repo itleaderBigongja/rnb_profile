@@ -18,6 +18,10 @@ public interface AccountRepository extends JpaRepository<Account, String> {
      *  해당 아이디에 맞는 계정의 모든 정보(ID, PASSWORD, EMAIL 등)를 데이터베이스에 가져와서 사용
      *  @param id 조회할 계정 아이디(로그인 시, 사용자가 입력한 아이디)
      *  @return 일치하는 계정 정보(Optional로 감싸져 반환). 계정이 없으면, 'Optional.empty()'를 반환 */
-    @Query(value = "SELECT * FROM ACCOUNT_TB WHERE ID = :id", nativeQuery = true)
+    @Query(value = """
+                   SELECT *
+                     FROM ACCOUNT_TB
+                    WHERE ID = :id                      /* :id == React 화면에서 id 값을 입력받음 */
+                   """, nativeQuery = true)
     Optional<Account> findAccountByIdNative(@Param("id") String id);
 }
