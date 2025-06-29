@@ -1,57 +1,73 @@
+// src/main/java/com/rnbsoft/account/service/AccountService.java
 package com.rnb.profile.account.service;
 
-import com.rnb.profile.account.domain.dto.LoginRequestDto;
-import com.rnb.profile.account.domain.entity.Account;
+import com.rnb.profile.account.domain.dto.RegisterRequestDto;
+import com.rnb.profile.account.domain.entity.Account; // 패키지 이름 조정
+import com.rnb.profile.account.domain.entity.Employee; // 패키지 이름 조정
 import com.rnb.profile.account.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rnb.profile.account.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
-/**
- * 로그인과 관련된 핵심 비즈니스 로직을 처리하는 서비스 클래스
- * 이 클래스는 데이터베이스 접근(Repository)을 통해 계정 정보를 조회하고,
- * 사용자가 입력한 비밀번호와 DB에 저장된 비밀번호를 비교하여 인증 과정을 수행
- *
- * [ 계층역할 ]
- * Repository로부터 데이터를 조회하여 비즈니스 규칙(비밀번호 일치 여부)에 따라 인증 여부를 판단
- * 현재는 비밀번호 암호화를 하지 않고 평문으로 직접 비교 */
-@Service    // Spring 컨테이너에 서비스 빈으로 등록
+@Service
+@RequiredArgsConstructor
 public class AccountService {
 
-    // AccountRepository 빈을 주입받아 DB 접근에 사용
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final EmployeeRepository employeeRepository;
+    private final PasswordEncoder passwordEncoder; // Spring Security의 비밀번호 인코더
 
-    /**
-     * 사용자의 로그인 정보를 받아 인증을 시도하는 메서드
-     * @param loginRequestDto 사용자가 입력한 계정 아이디(id)와 비밀번호(password)를 담은 객체
-     * @return 인증에 성공하면 해당 Account 객체를 Optional로 감싸 반환하고, 실패하면 Optional.empty()를 반환
-     **/
-    public Optional<Account> authenticate(LoginRequestDto loginRequestDto) {
+    // 중복 아이디 확인
+    @Transactional(readOnly = true)
+    public boolean isUserIdDuplicated(String id) {
+        // userId 필드를 가진 Account 엔티티가 존재하는지 확인
+        return accountRepository.findById(id).isPresent();
+    }
 
-        // Step 1: AccountRepository의 findAccountByIdNative 메서드를 사용하여
-        //         사용자가 입력한 '계정 아이디(loginRequest.getId())로 ACCOUNT_TB에서 계정 정보를 조회
-        //         Repository는 이 시점에서 비밀번호가 맞는지 검증하지 않고, 단지 해당 아이디의 모든 데이터를 가져온다.
-        Optional<Account> accountOptional = accountRepository.findAccountByIdNative(loginRequestDto.getId());
-
-        // Step 2: 조회된 계정 정보가 존재하는지 확인
-        if(accountOptional.isPresent()) {
-
-            // Optional에서 실제 Account 객체를 꺼낸다.
-            // account 객체 안에는 DB에서 가져온 평문 비밀번호가 포함되어 있다.
-            Account account = accountOptional.get();
-
-            /**
-             * Step 3: 계정이 존재한다면, 이제 '비밀번호'를 검증합니다.*/
-            if(account.getPassword().equals(loginRequestDto.getPassword())) {
-                // 비밀번호가 일치하면 인증 성공
-                return Optional.of(account);
-            }
+    // 사용자 회원가입 로직
+    @Transactional
+    public String registerUser(RegisterRequestDto request) {
+        // 1. ID 중복 확인
+        if (isUserIdDuplicated(request.getId())) {
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
 
-        // Step 4: 계정 아이디가 존재하지 않거나 비밀번호가 일치하지 않으면 인증 실패
-        return Optional.empty();
+        // 2. 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+        // 3. Account 엔티티 생성
+        Account account = Account.builder()
+                .id(request.getId())
+                .password(encodedPassword)
+                .email(request.getEmail())
+                .firstCreateId(request.getId())
+                .build();
+
+        // 4. Employee 엔티티 생성 (ID 설정)
+        Employee employee = Employee.builder()
+                .account(account)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .birthday(request.getBirthday())
+                .phoneNumber(request.getPhoneNumber())
+                .zipNo(request.getZipNo())
+                .address(request.getAddress())
+                .addressDtl(request.getAddressDtl())
+                .addressDivCode(request.getAddressDivCode())
+                .abilityLevel(request.getAbilityLevel())
+                .workCareer(request.getWorkCareer())
+                .hireDate(request.getHireDate())
+                .build();
+
+        // 5. 양방향 관계 설정
+        account.setEmployee(employee); // 이 메서드 내부에서 employee.setAccount도 호출됨
+
+        // 6. 저장 (CascadeType.ALL에 의해 Employee도 같이 저장됨)
+        accountRepository.save(account); // ✅ 핵심 저장 지점
+
+        return "회원가입이 성공적으로 완료되었습니다.";
     }
 }

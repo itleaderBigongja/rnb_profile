@@ -52,26 +52,39 @@
     border-bottom: 2px solid #20b2aa;
 }
 
-/* 폼 그룹 */
+/* 폼 그룹 - 중요 변경사항 */
 .form-group {
     margin-bottom: 20px;
+    display: flex; /* Flexbox 적용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    position: relative; /* 자식 요소의 absolute 위치 기준점 */
 }
 
 .form-row {
     display: flex;
     gap: 20px;
+    /* form-row 내부의 form-group에는 label과 input을 따로 flex 처리하지 않음 */
+    /* 이 경우에는 label과 input이 세로로 정렬되도록 함 */
 }
 
 .form-row .form-group {
     flex: 1;
+    display: block; /* form-row 내부에서는 다시 블록으로 설정 */
+}
+.form-row .form-group label {
+    margin-bottom: 8px; /* form-row 내 label은 아래 여백 유지 */
+    margin-right: 0; /* form-row 내 label은 오른쪽 여백 없음 */
 }
 
-/* 라벨 */
+
+/* 라벨 - 중요 변경사항 */
 label {
-    display: block;
+    display: block; /* Flex item이지만 여전히 텍스트 블록처럼 작동 */
     font-weight: 600;
     color: #333;
-    margin-bottom: 8px;
+    min-width: 90px; /* 라벨의 최소 너비 설정 (입력 필드와 간격 유지) */
+    text-align: left; /* 라벨 텍스트 왼쪽 정렬 */
+    margin-right: 15px; /* 라벨과 입력 필드 사이 간격 */
     font-size: 14px;
 }
 
@@ -79,19 +92,33 @@ label::after {
     content: '';
 }
 
-/* 입력 필드 */
-input, select {
-    width: 100%;
+/* 입력 필드 - 중요 변경사항: height를 명시하고 line-height를 reset */
+input:not([type="radio"]), /* 라디오 버튼은 제외 */
+select {
+    flex: 1; /* 남은 공간을 모두 차지하도록 함 */
     padding: 12px 16px;
     border: 2px solid #e1e5e9;
     border-radius: 8px;
     font-size: 14px;
+    /* height를 고정 높이로 설정하여 안정적인 크기 확보 */
+    height: 44px; /* 명시적으로 높이 지정 (padding top + font-size + padding bottom) */
+    line-height: normal; /* 브라우저 기본 line-height를 따르도록 */
     transition: all 0.3s ease;
     box-sizing: border-box;
     font-family: inherit;
+    /* 텍스트 세로 정렬을 위한 vertical-align 추가 */
+    vertical-align: middle;
 }
 
-input:focus, select:focus {
+/* input[type="date"]에 대한 추가 조정 */
+input[type="date"] {
+    padding-top: 10px; /* 날짜 아이콘과의 간섭을 줄이기 위해 패딩 조정 */
+    padding-bottom: 10px;
+    line-height: 20px; /* 내부 텍스트 높이 조정 */
+}
+
+
+input:focus:not([type="radio"]), select:focus {
     outline: none;
     border-color: #20b2aa;
     box-shadow: 0 0 0 3px rgba(32, 178, 170, 0.1);
@@ -123,18 +150,19 @@ input.success:focus {
 
 /* 버튼이 있는 입력 필드 */
 .input-with-button {
-    display: flex;
+    display: flex; /* Flexbox 유지 */
+    flex-grow: 1; /* input-with-button 전체가 나머지 공간을 차지하도록 */
     gap: 10px;
 }
 
 .input-with-button input {
-    flex: 1;
+    flex: 1; /* input이 input-with-button 내에서 남은 공간 차지 */
 }
 
-/* 버튼 스타일 */
-.check-button, .search-button {
+/* 버튼 스타일 - 중요 변경사항: height를 명시 */
+.check-button, .search-button { /* .search-button 클래스 추가 */
     padding: 12px 20px;
-    background: #20b2aa;
+    /* background: #20b2aa; -- 각 버튼에 맞게 아래에서 개별 정의 */
     color: white;
     border: none;
     border-radius: 8px;
@@ -143,10 +171,28 @@ input.success:focus {
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    height: 44px; /* input과 동일한 높이로 고정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.check-button:hover, .search-button:hover {
+/* 각 버튼의 배경색 정의 */
+.check-button {
+    background: #20b2aa;
+}
+
+.search-button { /* 주소 검색 버튼의 배경색 정의 */
+    background: #6c757d; /* 회색 계열 */
+}
+
+.check-button:hover {
     background: #1a9b94;
+    transform: translateY(-1px);
+}
+
+.search-button:hover { /* 주소 검색 버튼 호버 효과 */
+    background: #5a6268;
     transform: translateY(-1px);
 }
 
@@ -154,22 +200,37 @@ input.success:focus {
     transform: translateY(0);
 }
 
-/* 에러 메시지 */
+/* 에러 메시지 - 중요 변경사항 */
 .error-message {
     display: block;
     color: #e74c3c;
     font-size: 12px;
-    margin-top: 5px;
     font-weight: 500;
+    /* absolute positioning으로 변경하여 레이아웃에 영향 주지 않음 */
+    position: absolute;
+    bottom: -18px; /* 입력 필드 아래 적절한 위치로 조정 */
+    left: calc(90px + 15px); /* 라벨 너비 + 라벨-입력필드 간격 */
+    width: calc(100% - (90px + 15px)); /* 남은 공간 차지 */
+    white-space: nowrap; /* 텍스트가 길어도 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트는 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
+    z-index: 10; /* 다른 요소 위에 표시되도록 */
 }
 
-/* 성공 메시지 */
+/* 성공 메시지 - 중요 변경사항 (에러 메시지와 동일하게 조정) */
 .success-message {
     display: block;
     color: #27ae60;
     font-size: 12px;
-    margin-top: 5px;
     font-weight: 500;
+    position: absolute;
+    bottom: -18px; /* 입력 필드 아래 적절한 위치로 조정 */
+    left: calc(90px + 15px);
+    width: calc(100% - (90px + 15px));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 10;
 }
 
 /* 폼 액션 버튼들 */
@@ -180,6 +241,39 @@ input.success:focus {
     margin-top: 40px;
     padding-top: 30px;
     border-top: 1px solid #e1e5e9;
+}
+
+/* 라디오 버튼 그룹 - 중요 변경사항 */
+.radio-group {
+    display: flex; /* Flexbox 적용 */
+    gap: 25px;
+    flex-grow: 1; /* 남은 공간을 모두 차지하도록 함 */
+    margin-top: 0; /* form-group의 align-items: center;로 이미 정렬됨 */
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1em;
+    color: #555;
+    font-weight: normal; /* 라디오 버튼 텍스트는 일반 굵기 */
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+    /* 라디오 버튼 자체의 너비 조절은 필요없음. flex: 1;도 제거 */
+    width: auto; /* 라디오 버튼의 너비를 자동으로 */
+    padding: 0; /* 패딩 제거 */
+    border: none; /* 테두리 제거 */
+    min-height: auto; /* 라디오 버튼 높이 제한 제거 */
+    height: auto; /* 라디오 버튼 높이도 auto로 */
+    vertical-align: middle; /* 라디오 버튼 자체의 수직 정렬 */
+}
+input[type="radio"]:focus { /* 라디오 버튼 포커스 스타일 */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(32, 178, 170, 0.1);
 }
 
 .cancel-button, .submit-button {
@@ -225,7 +319,7 @@ input[type="date"] {
 /* 읽기 전용 입력 필드 */
 input[readonly] {
     background-color: #f8f9fa;
-    cursor: pointer;
+    cursor: default; /* 읽기 전용은 커서 변경 */
 }
 
 /* 선택 박스 */
@@ -250,13 +344,51 @@ select {
         padding: 25px;
     }
 
-    .form-row {
+    /* 모바일에서는 라벨이 위에 오도록 다시 설정 */
+    .form-group {
         flex-direction: column;
-        gap: 0;
+        align-items: flex-start;
+        /* 모바일에서는 absolute 기준점을 form-group 자체로 유지 */
+        position: relative;
+    }
+
+    .form-group label {
+        min-width: auto; /* 너비 제한 해제 */
+        margin-right: 0;
+        margin-bottom: 8px; /* 아래 여백 다시 추가 */
+    }
+
+    input:not([type="radio"]), select, .input-with-button, .radio-group {
+        width: 100%; /* 너비 100%로 설정 */
+        flex: none; /* flexgrow 해제 */
     }
 
     .input-with-button {
         flex-direction: column;
+        gap: 8px;
+    }
+
+    /* .check-button과 .search-button에 공통 적용 */
+    .check-button, .search-button {
+        width: 100%;
+        margin-left: 0;
+        height: auto; /* 모바일에서 버튼 높이 자동 */
+        min-height: 44px; /* 최소 높이 유지 */
+    }
+
+    /* 에러/성공 메시지 모바일 조정 */
+    .error-message, .success-message {
+        position: absolute; /* 모바일에서도 absolute 유지 */
+        bottom: -18px; /* 입력 필드 아래 */
+        left: 0; /* 왼쪽 정렬 */
+        width: 100%; /* 전체 너비 차지 */
+        text-align: left; /* 텍스트 왼쪽 정렬 */
+        margin-left: 0; /* 기존 margin-left 제거 */
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
     }
 
     .form-actions {

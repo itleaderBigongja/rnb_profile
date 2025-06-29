@@ -114,6 +114,44 @@
     user-select: none;
 }
 
+.button-group {
+    display: flex; /* 버튼들을 가로로 정렬 */
+    justify-content: space-between; /* 버튼 사이에 공간 분배 */
+    gap: 10px; /* 버튼 사이 간격 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.login-button,
+.register-button {
+    flex: 1; /* flex-grow: 1, flex-shrink: 1, flex-basis: 0% */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-sizing: border-box; /* 패딩과 보더를 요소의 총 너비 및 높이에 포함 */
+    transition: background-color 0.3s ease;
+}
+
+.login-button {
+    background-color: #007bff; /* 기존 로그인 버튼 색상 */
+    color: white;
+}
+
+.login-button:hover {
+    background-color: #0056b3; /* 호버 시 색상 */
+}
+
+.register-button {
+    background-color: #5cb85c; /* 회원가입 버튼 색상 (예시: 초록색) */
+    color: white;
+    margin-top: 5px;
+}
+
+.register-button:hover {
+    background-color: #4cae4c; /* 호버 시 색상 */
+}
+
 /* 반응형 디자인 */
 @media (max-width: 480px) {
     .login-form-wrapper {

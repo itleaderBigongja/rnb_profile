@@ -1,3 +1,4 @@
+// src/main/java/com/rnbsoft/account/dto/JwtResponseDto.java
 package com.rnb.profile.account.domain.dto;
 
 import lombok.AllArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDto {
+public class JwtResponseDto {
     private String token;
-    private String type = "Bearer"; // 토큰 타입
-    private String message; // 로그인 성공 메시지
+    private String type = "Bearer";
+    private String message; // 로그인 성공 또는 실패 메시지
 }

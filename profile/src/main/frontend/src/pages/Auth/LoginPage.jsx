@@ -74,6 +74,11 @@ const LoginPage = () => {
         }
     };
 
+    // 회원가입 페이지로 이동하는 함수
+    const handleRegisterClick = () => {
+        navigate('/register');
+    };
+
     return (
         <div className="login-container">
             <div className="login-form-wrapper">
@@ -104,7 +109,12 @@ const LoginPage = () => {
                                required/>
                     </div>
 
-                    <button type="submit" className="login-button">로그인</button>
+                    <div className="button-group"> {/* 새롭게 추가된 버튼 그룹 */}
+                        <button type="submit" className="login-button">로그인</button>
+                        <button type="button" className="register-button" onClick={handleRegisterClick}>
+                            회원가입
+                        </button>
+                    </div>
 
                     <div className="checkbox-group">
                         <label className="checkbox-label">

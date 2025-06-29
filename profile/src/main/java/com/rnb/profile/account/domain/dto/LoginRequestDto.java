@@ -1,11 +1,14 @@
 package com.rnb.profile.account.domain.dto;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * 클라이언트(프론트엔드)로부터 로그인 요청 시 받는 데이터를 정의하는 DTO(Data Transfer Object).
  * HTTP 요청의 JSON 본문이 이 객체로 자동 매핑*/
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequestDto {
 
     /**
