@@ -13,138 +13,6 @@
     /* fixed header를 사용하는 경우 body 또는 main-container에 padding-top을 주어 콘텐츠가 헤더에 가려지지 않도록 해야 합니다. */
 }
 
-/* Header */
-.main-header {
-    background-color: #30a3bc;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px; /* 고정된 헤더 높이 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* --- 시작: fixed position 관련 스타일 추가/수정 --- */
-    top: 0;
-    left: 0;
-    width: 100%; /* 너비를 100%로 설정하여 가로 전체를 차지 */
-    z-index: 1000; /* 다른 콘텐츠 위에 오도록 */
-    /* --- 끝: fixed position 관련 스타일 추가/수정 --- */
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    margin-right: 0px;
-}
-
-.header-logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 5px;
-}
-
-.company-title {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.main-nav {
-    display: flex;
-    gap: 0px;
-}
-
-.nav-item {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    position: relative;
-}
-
-.nav-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* --- 시작: 드롭다운 및 아바타 관련 CSS 추가/수정 --- */
-.header-right {
-    display: flex;
-    align-items: center;
-    position: relative; /* 드롭다운 메뉴의 기준점이 됩니다. 중요! */
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    cursor: pointer; /* 클릭 가능한 요소임을 나타냄 */
-}
-
-.profile-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
-    border: 2px solid white;
-    display: flex; /* 이미지 중앙 정렬을 위해 flex 사용 */
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* 이미지가 넘치지 않도록 */
-    transition: border-color 0.2s ease;
-}
-
-.profile-avatar:hover {
-    border-color: #00bcd4; /* 호버 시 테두리 색상 변경 */
-}
-
-.profile-avatar img { /* profile-avatar 내부에 추가된 img 태그 스타일 */
-    width: 100%; /* 부모 div의 100% 너비 */
-    height: 100%; /* 부모 div의 100% 높이 */
-    object-fit: cover; /* 이미지가 잘리지 않고 div를 채우도록 */
-}
-
-/* 드롭다운 메뉴 스타일 */
-.dropdown-menu {
-    position: absolute;
-    /* top: profile-avatar 높이(35px) + border(2px*2) + padding(아마도 main-header의) + 여백
-       현재 main-header의 높이가 50px이므로, 아바타 아래 바로 붙이려면 50px로 설정하는 것이 직관적입니다.
-       아니면 아바타의 실제 bottom 위치를 계산해야 합니다. 일단 50px로 설정합니다. */
-    top: 50px; /* 헤더 높이만큼 아래로 */
-    right: 0; /* 우측 정렬 */
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 그림자 */
-    border-radius: 8px; /* 모서리 둥글게 */
-    min-width: 120px; /* 메뉴 최소 너비 */
-    z-index: 1100; /* 헤더보다 위에 오도록 */
-    overflow: hidden; /* 모서리 둥글게 */
-    font-size: 14px; /* 메뉴 글씨 크기 */
-}
-
-.dropdown-menu ul {
-    list-style: none; /* 리스트 점 제거 */
-    padding: 0;
-    margin: 0;
-}
-
-.dropdown-menu li {
-    padding: 10px 15px; /* 각 메뉴 항목 패딩 */
-    cursor: pointer; /* 클릭 가능한 요소임을 나타냄 */
-    color: #333;
-    transition: background-color 0.2s ease;
-}
-
-.dropdown-menu li:hover {
-    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
-}
-/* --- 끝: 드롭다운 및 아바타 관련 CSS 추가/수정 --- */
-
-
 /* Portal Tabs */
 .portal-tabs {
     background-color: white;
@@ -426,6 +294,7 @@
 .right-content {
     display: flex;
     flex-direction: column;
+    width: 350px;
 }
 
 .news-widget {
@@ -436,7 +305,7 @@
 }
 
 .news-header {
-    padding: 20px;
+    padding: 10px;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
@@ -584,10 +453,6 @@
     .portal-tabs {
         padding: 0 10px;
         overflow-x: auto;
-    }
-
-    .main-header {
-        padding: 0 10px;
     }
 
     .calendar-grid {

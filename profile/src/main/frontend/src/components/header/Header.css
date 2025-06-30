@@ -1,0 +1,125 @@
+/* src/frontend/src/components/header/Header.css */
+
+/* Header Styles */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #30a3bc; /* 알앤비소프트 헤더 색상 (짙은 파랑/청록) */
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 다른 요소 위에 오도록 */
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.header-logo .logo-image {
+    height: 30px; /* 로고 이미지 높이 */
+    margin-right: 10px;
+    vertical-align: middle;
+    object-fit: contain; /* 이미지 비율 유지 */
+}
+
+.company-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.main-nav {
+    display: flex;
+    gap: 25px; /* 메뉴 항목 간 간격 */
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: white;
+}
+
+/* Underline effect for active/hover */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Adjust based on preference */
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after { /* 만약 활성 메뉴가 있다면 */
+    width: 100%;
+}
+
+
+/* User Profile & Dropdown */
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-avatar .avatar-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transition: border-color 0.3s ease;
+    object-fit: contain; /* 이미지 비율 유지 */
+    margin-left: 20px;
+    margin-top: 7px;
+}
+
+.profile-avatar:hover .avatar-image {
+    border-color: white;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 55px; /* 헤더 높이에 따라 조절 */
+    right: 0;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 120px;
+    z-index: 1001;
+    overflow: hidden; /* 모서리 둥글게 */
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,317 @@
+/* src/pages/Profile/ProfilePage.css */
+
+/* 전체 레이아웃 컨테이너 (이전 MainPage.jsx의 main-container 스타일) */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 최소 높이를 뷰포트 높이로 설정 */
+    background-color: #f7f9fc; /* 전체 배경색 (약간 회색빛) */
+    font-family: 'Noto Sans KR', sans-serif; /* 한글 폰트 적용 (필요시 임포트) */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Portal Tabs (MainPage.jsx에서 가져온 스타일) */
+.portal-tabs {
+    display: flex;
+    align-items: center;
+    background-color: #e0e6ed; /* 탭 배경색 */
+    padding: 8px 30px;
+    border-bottom: 1px solid #c9d2de;
+    font-size: 0.9rem;
+    color: #555;
+    position: sticky; /* 스크롤 시 상단에 고정 */
+    top: 0; /* 헤더 아래에 위치 */
+    z-index: 900;
+}
+
+.portal-tabs .tab {
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.portal-tabs .tab:hover {
+    background-color: #d1dae8;
+    color: #333;
+}
+
+.portal-tabs .tab.active {
+    background-color: white;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+.portal-tabs .tab-add {
+    font-size: 1.2rem;
+    padding: 3px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f4f8;
+    transition: background-color 0.2s ease;
+}
+
+.portal-tabs .tab-add:hover {
+    background-color: #e0e6ed;
+}
+
+.portal-menu {
+    margin-left: auto; /* 오른쪽 정렬 */
+    display: flex;
+    gap: 20px;
+    color: #666;
+}
+
+.portal-menu span {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.portal-menu span:hover {
+    color: #333;
+}
+
+
+/* --- ProfilePage Specific Styles --- */
+
+/* 기존 .profile-container의 역할 일부를 대체하는 최상위 콘텐츠 래퍼 */
+.profile-content-wrapper {
+    flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+    padding: 30px;
+    background-color: #f7f9fc;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.profile-header h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.profile-actions .btn-primary,
+.profile-actions .btn-success,
+.profile-actions .btn-cancel {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.profile-actions .btn-primary {
+    background-color: #30a3bc; /* 수정 버튼 색상 */
+    color: white;
+}
+
+.profile-actions .btn-primary:hover {
+    background-color: #278da3;
+}
+
+.profile-actions .edit-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-actions .btn-success {
+    background-color: #4CAF50; /* 저장 버튼 색상 */
+    color: white;
+}
+
+.profile-actions .btn-success:hover {
+    background-color: #45a049;
+}
+
+.profile-actions .btn-cancel {
+    background-color: #f44336; /* 취소 버튼 색상 */
+    color: white;
+}
+
+.profile-actions .btn-cancel:hover {
+    background-color: #da190b;
+}
+
+.profile-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profile-section {
+    margin-bottom: 40px; /* 각 섹션 하단 간격 */
+    border-bottom: 1px solid #eee; /* 섹션 구분선 */
+    padding-bottom: 30px;
+}
+
+.profile-section:last-child {
+    border-bottom: none; /* 마지막 섹션은 구분선 없음 */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.profile-section h2 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #30a3bc; /* 섹션 제목 밑줄 */
+    display: inline-block; /* 밑줄이 텍스트 너비만큼만 차지하도록 */
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin-bottom: 0; /* h2와 버튼 사이 간격 조절 */
+    border-bottom: 2px solid #30a3bc;
+    padding-bottom: 10px;
+}
+
+.btn-add {
+    padding: 6px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-add:hover {
+    background-color: #45a049;
+}
+
+.dynamic-item {
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fcfdff;
+    position: relative; /* 삭제 버튼 위치 조절을 위해 */
+}
+
+.dynamic-item:last-child {
+    margin-bottom: 0;
+}
+
+.btn-remove {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 12px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-remove:hover {
+    background-color: #da190b;
+}
+
+/* --- Form Layout and Input Styling (핵심 수정 부분) --- */
+
+.form-grid {
+    display: grid;
+    /* 기본적으로 2열 레이아웃을 사용합니다. */
+    /* 필요에 따라 grid-template-columns를 조정하여 3열 이상도 가능합니다. */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; /* 각 폼 그룹 간의 간격 */
+    margin-bottom: 15px; /* 그리드 하단 여백 */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column; /* 레이블과 입력 필드를 세로로 정렬 */
+    position: relative; /* 라벨 포지셔닝을 위해 */
+}
+
+.form-group label {
+    font-size: 0.85rem; /* 레이블 폰트 크기 */
+    color: #666;
+    margin-bottom: 8px; /* 레이블과 입력 필드 사이 간격 */
+    font-weight: 500;
+    pointer-events: none; /* 클릭 이벤트 방지 */
+    transition: all 0.2s ease;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select {
+    width: 100%; /* 부모(form-group)의 너비에 맞춤 */
+    padding: 10px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    box-sizing: border-box; /* padding과 border가 width에 포함되도록 */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: white; /* 기본 배경색 */
+}
+
+/* Input focus 스타일 */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #30a3bc;
+    box-shadow: 0 0 0 3px rgba(48, 163, 188, 0.2);
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+/* 비활성화된 입력 필드 스타일 */
+.input-disabled,
+.input-readonly {
+    background-color: #e9ecef; /* 비활성화된 필드 배경색 */
+    color: #6c757d; /* 비활성화된 필드 텍스트 색상 */
+    cursor: not-allowed;
+    border: 1px solid #ced4da;
+}
+
+/* full-width 클래스: 그리드에서 전체 너비를 차지하도록 */
+.form-group.full-width {
+    grid-column: 1 / -1; /* 모든 열에 걸쳐 확장 */
+}
+
+/* 기술스펙 섹션의 특정 그리드 조정 */
+.tech-skills .tech-skill-item .form-grid {
+    grid-template-columns: 2fr 1fr; /* 기술명 2/3, 숙련도 1/3 */
+    gap: 15px; /* 기술별 간격 */
+}
+
+.tech-skills .tech-skill-item {
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fcfdff;
+}
+
+.tech-skills .tech-skill-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 드롭다운 이미지 로딩 오류 방지 (MainPage Header용) */
+.header-logo .logo-image,
+.profile-avatar .avatar-image {
+    object-fit: contain; /* 이미지 비율 유지 */
+}
