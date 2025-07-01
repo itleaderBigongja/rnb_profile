@@ -59,9 +59,8 @@ const LoginPage = () => {
                 const data = await response.json(); // 성공 응답의 JSON 본문을 파싱
                 console.log('백엔드로부터 받은 로그인 성공 응답:', data);
                 alert(data.message || "로그인 성공!");
-
+                localStorage.setItem('token', data.token);
                 navigate('/main'); // 로그인 성공 시, `/main` 경로로 페이지 이동
-
             } else {
                 const errorData = await response.json(); // 에러 응답의 JSON 본문을 파싱
                 console.error('백엔드로부터 받은 로그인 실패 응답:', response.status, errorData);

@@ -5,12 +5,14 @@ import com.rnb.profile.account.domain.dto.LoginRequestDto;
 import com.rnb.profile.account.domain.dto.LoginResponseDto;
 import com.rnb.profile.account.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -21,6 +23,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
         try {
             LoginResponseDto response = authService.authenticateAndGenerateToken(loginRequestDto.getId(), loginRequestDto.getPassword());
+            log.info("Login successful : " + response.getToken() + response.getMessage());
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new LoginResponseDto(null, null, e.getMessage()));

@@ -15,6 +15,7 @@ const MainPage = () => {
 
     // 실시간 시간 업데이트
     useEffect(() => {
+
         const timer = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
