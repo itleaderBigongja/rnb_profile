@@ -64,7 +64,7 @@ const ProfilePage = () => {
                 date: '2019-12-15'
             }
         ],
-        // ✅ techSkills 객체에서 배열로 변경 (다중 항목을 위해)
+        // 객체에서 배열로 변경 (다중 항목을 위해)
         techSkills: [
             { id: 1, category: 'language', skill: 'Java, JavaScript, Python', level: '상' },
             { id: 2, category: 'framework', skill: 'React, Spring Boot', level: '상' },
@@ -634,7 +634,8 @@ const ProfilePage = () => {
                                         </select>
                                     </div>
                                 </div>
-                                {isEditing && profileData.techSkills.length > 0 && ( // 최소 1개는 유지하도록 조건을 조정할 수 있음
+                                {/* 여기 조건 수정: profileData.techSkills.length > 1 일 때만 삭제 버튼 보이게 */}
+                                {isEditing && profileData.techSkills.length > 1 && (
                                     <button className="btn-remove" onClick={() => removeItem('techSkills', index)}>
                                         삭제
                                     </button>
