@@ -17,6 +17,18 @@ const TECH_CATEGORIES = [
 
 const SKILL_LEVELS = ['상', '중', '하'];
 
+// 이수 분류 코드 (COMPLETE_TB)
+const COMPLETE_DIV_CODES = {
+    EDUCATION: 'EDUCATION', // 학력
+    TRAINING: 'TRAINING',   // 교육
+};
+
+// 이력 분류 코드 (PERSON_HISTORY_TB)
+const PERSON_HISTORY_DIV_CODES = {
+    CAREER: 'CAREER',           // 경력
+    CERTIFICATE: 'CERTIFICATE', // 자격증
+};
+
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -26,45 +38,57 @@ const ProfilePage = () => {
     const [isDaumPostcodeLoaded, setIsDaumPostcodeLoaded] = useState(false);
 
     const [profileData, setProfileData] = useState({
-        name: '홍길동',
-        gender: '남성',
-        birthDate: '1990-01-01',
-        workExperience: '5년',
-        position: '선임연구원',
-        department: '개발팀',
-        techGrade: 'A급',
+        // EMPLOYEE_TB와 매핑되는 필드 (DB 컬럼명과 일치)
+        firstName: '길동', // FIRST_NAME
+        lastName: '홍',    // LAST_NAME
+        gender: '남성',    // EMPLOYEE_TB에 직접적인 필드 없음, 프론트엔드에서만 표시용
+        birthday: '1990-01-01', // BIRTHDAY
+        workCareer: '5년', // WORK_CAREER
+        position: '선임연구원', // EMPLOYEE_TB에 직접 필드 없음, 프론트엔드에서만 표시용
+        department: '개발팀', // DEPT_CODE (DB에는 코드값 저장)
+        abilityLevel: '초급', // ABILITY_LEVEL
 
-        // 주소 관련 필드 추가
-        zipNo: '',
-        address: '',
-        addressDtl: '',
-        addressDivCode: 'ROAD',
+        // 주소 관련 필드 (DB 컬럼명과 일치)
+        zipNo: '',           // ZIP_NO
+        address: '',         // ADDRESS
+        addressDtl: '',      // ADDRESS_DTL
+        addressDivCode: 'ROAD', // ADDRESS_DIV_CODE
 
-        education: [
+        // COMPLETE_TB (이수) - 학력사항
+        // complDivCode: 'EDUCATION'
+        completes: [
             {
-                id: 1, // id 추가 (고유성을 위해)
-                startDate: '2008-03-01',
-                endDate: '2012-02-28',
-                content: '○○대학교 컴퓨터공학과 학사 졸업'
+                id: 1, // 프론트엔드에서 고유 식별용 (COMPL_SEQ_NO와는 다름)
+                complDivCode: COMPLETE_DIV_CODES.EDUCATION, // 이수분류코드: EDUCATION
+                complOrgName: '○○대학교', // COMPL_ORG_DIV_NAME (학교명)
+                complName: '컴퓨터공학과 학사 졸업', // COMPL_NAME (학력내용)
+                complDate: '2012-02-28', // COMPL_DATE (졸업일)
+                startDate: '2008-03-01', // 편의상 추가 (입학일 같은), DB에는 COMPL_DATE만
             }
         ],
-        career: [
+        // PERSON_HISTORY_TB (개인이력) - 경력사항
+        // hstDivCode: 'CAREER'
+        personHistories: [
             {
-                id: 1, // id 추가
-                startDate: '2020-01-01',
-                endDate: '2025-06-30',
-                content: '○○회사 개발팀 근무'
+                id: 1, // 프론트엔드에서 고유 식별용 (HIS_SEQ_NO와는 다름)
+                hstDivCode: PERSON_HISTORY_DIV_CODES.CAREER, // 이력분류코드: CAREER
+                hstOrgName: '○○회사', // HST_ORG_NAME (회사명)
+                histStartDate: '2020-01-01', // HIST_START_DATE
+                histEndDate: '2025-06-30', // HIST_END_DATE
+                histContent: '개발팀 근무', // HIST_CONTENT (경력내용)
+            },
+            // PERSON_HISTORY_TB (개인이력) - 자격증
+            // hstDivCode: 'CERTIFICATE'
+            {
+                id: 2, // 고유 id
+                hstDivCode: PERSON_HISTORY_DIV_CODES.CERTIFICATE, // 이력분류코드: CERTIFICATE
+                hstOrgName: '한국산업인력공단', // HST_ORG_NAME (인증기관)
+                histContent: '정보처리기사',     // HIST_CONTENT (자격증명)
+                histStartDate: '2019-12-15',     // HIST_START_DATE (취득일자)
+                histEndDate: '',                 // 자격증은 종료일 없음
             }
         ],
-        certificates: [
-            {
-                id: 1, // id 추가
-                authority: '한국산업인력공단',
-                name: '정보처리기사',
-                date: '2019-12-15'
-            }
-        ],
-        // 객체에서 배열로 변경 (다중 항목을 위해)
+        // TECH_SKILL_TB (기술스펙)
         techSkills: [
             { id: 1, category: 'language', skill: 'Java, JavaScript, Python', level: '상' },
             { id: 2, category: 'framework', skill: 'React, Spring Boot', level: '상' },
@@ -73,30 +97,26 @@ const ProfilePage = () => {
             { id: 5, category: 'cloud', skill: 'AWS, Azure', level: '하' },
             { id: 6, category: 'others', skill: 'Git, Jira', level: '상' }
         ],
-        training: [
+        // COMPLETE_TB (이수) - 교육기관
+        // complDivCode: 'TRAINING'
+        training: [ // 편의상 별도 필드로 유지 (backend 전송 시 completes 배열로 합치거나 분류)
             {
-                id: 1, // id 추가
-                institution: '○○교육원',
-                content: 'React 심화 과정',
-                startDate: '2024-01-15',
-                endDate: '2024-02-15'
+                id: 1, // 고유 id
+                complDivCode: COMPLETE_DIV_CODES.TRAINING, // 이수분류코드: TRAINING
+                complOrgName: '○○교육원', // COMPL_ORG_DIV_NAME (교육기관명)
+                complName: 'React 심화 과정', // COMPL_NAME (교육내용)
+                complDate: '2024-02-15', // COMPL_DATE (종료일)
+                startDate: '2024-01-15', // 편의상 추가 (시작일), DB에는 COMPL_DATE만
             }
         ]
     });
 
     const [originalProfileData, setOriginalProfileData] = useState({});
 
-    // Daum Postcode API 스크립트 로드 및 준비 확인
     useEffect(() => {
         const scriptId = 'daum-postcode-script';
-
-        // 스크립트가 이미 존재하면 재로딩하지 않음
         if (document.getElementById(scriptId)) {
-            // 이전에 로드된 스크립트가 있다면 isDaumPostcodeLoaded를 true로 설정
             if (window.daum && window.daum.Postcode) {
-                // autoload=false를 사용했다면 여기서 load() 호출이 필요할 수 있지만,
-                // 현재 코드(autoload=true)에서는 이미 Postcode 객체가 생성되어 있음.
-                // 따라서 상태만 true로 설정.
                 setIsDaumPostcodeLoaded(true);
                 console.log('Daum Postcode API already loaded.');
             }
@@ -104,7 +124,6 @@ const ProfilePage = () => {
         }
 
         const script = document.createElement('script');
-        // ✅ autoload=true (기본) 유지. 불필요한 load() 호출 제거 (아래 handleAddressSearch 함수에서 new Postcode()로 사용)
         script.src = '//t1.daumcdn.net/map_js_init/postcode.v2.js';
         script.id = scriptId;
         script.async = true;
@@ -117,45 +136,33 @@ const ProfilePage = () => {
             }
         };
         document.head.appendChild(script);
-
-        // SPA에서는 스크립트를 유지하는 것이 일반적
-        // return () => { ... } 주석 처리 유지 (이전과 동일)
     }, []);
 
-    // 초기 데이터 로딩 (목업 데이터)
     useEffect(() => {
         setOriginalProfileData({ ...profileData });
     }, []);
 
-    // ✅ handleInputChange 함수 수정: techSkills 배열에 대한 처리 포함
+    // handleInputChange 함수 수정: 테이블 필드명에 맞게 변경
     const handleInputChange = (field, value, index = null, subField = null) => {
         if (index !== null) {
             setProfileData(prev => {
-                const newList = [...prev[field]];
-                if (subField) {
-                    newList[index] = { ...newList[index], [subField]: value };
-                } else {
-                    newList[index] = value;
+                let updatedList;
+                if (field === 'completes') {
+                    updatedList = [...prev.completes];
+                    updatedList[index] = { ...updatedList[index], [subField]: value };
+                } else if (field === 'personHistories') {
+                    updatedList = [...prev.personHistories];
+                    updatedList[index] = { ...updatedList[index], [subField]: value };
+                } else if (field === 'techSkills') {
+                    updatedList = [...prev.techSkills];
+                    updatedList[index] = { ...updatedList[index], [subField]: value };
+                } else if (field === 'training') { // training은 completes 배열에 속하지만, 편의상 별도로 처리
+                    updatedList = [...prev.training];
+                    updatedList[index] = { ...updatedList[index], [subField]: value };
                 }
-                return { ...prev, [field]: newList };
+                return { ...prev, [field]: updatedList };
             });
-        }
-            // ✅ techSkills는 더 이상 중첩된 객체로 접근하지 않고, 배열 항목으로 직접 접근하므로 이 조건 제거
-            // else if (field.includes('.')) {
-            //     const [mainField, subField] = field.split('.');
-            //     setProfileData(prev => ({
-            //         ...prev,
-            //         [mainField]: {
-            //             ...prev[mainField],
-            //             [subField]: {
-            //                 ...prev[mainField][subField],
-            //                 skill: value.skill !== undefined ? value.skill : prev[mainField][subField].skill,
-            //                 level: value.level !== undefined ? value.level : prev[mainField][subField].level
-            //             }
-            //         }
-            //     }));
-        // }
-        else {
+        } else {
             setProfileData(prev => ({
                 ...prev,
                 [field]: value
@@ -163,33 +170,76 @@ const ProfilePage = () => {
         }
     };
 
-    // ✅ addItem 함수 수정: techSkills 항목 추가 로직 포함
     const addItem = (field) => {
-        const newItem = {};
-        const tempId = Date.now(); // 고유 ID 생성
+        const tempId = Date.now(); // 고유 ID 생성 (프론트엔드 전용)
+        let newItem = {};
 
-        if (field === 'education') {
-            Object.assign(newItem, { id: tempId, startDate: '', endDate: '', content: '' });
-        } else if (field === 'career') {
-            Object.assign(newItem, { id: tempId, startDate: '', endDate: '', content: '' });
-        } else if (field === 'certificates') {
-            Object.assign(newItem, { id: tempId, authority: '', name: '', date: '' });
-        } else if (field === 'training') {
-            Object.assign(newItem, { id: tempId, institution: '', content: '', startDate: '', endDate: '' });
-        } else if (field === 'techSkills') {
-            // ✅ 새로운 기술 스킬 항목 추가
-            Object.assign(newItem, {
+        if (field === 'completes' || field === 'education') { // 학력 추가
+            newItem = {
                 id: tempId,
-                category: TECH_CATEGORIES[0].value, // 첫 번째 카테고리로 기본 설정
+                complDivCode: COMPLETE_DIV_CODES.EDUCATION,
+                complOrgName: '',
+                complName: '',
+                complDate: '',
+                startDate: '', // UI 편의상
+            };
+            setProfileData(prev => ({
+                ...prev,
+                completes: [...prev.completes, newItem]
+            }));
+        } else if (field === 'personHistories' || field === 'career') { // 경력 추가
+            newItem = {
+                id: tempId,
+                hstDivCode: PERSON_HISTORY_DIV_CODES.CAREER,
+                hstOrgName: '',
+                histStartDate: '',
+                histEndDate: '',
+                histContent: '',
+            };
+            setProfileData(prev => ({
+                ...prev,
+                personHistories: [...prev.personHistories, newItem]
+            }));
+        } else if (field === 'certificates') { // 자격증 추가
+            newItem = {
+                id: tempId,
+                hstDivCode: PERSON_HISTORY_DIV_CODES.CERTIFICATE,
+                hstOrgName: '',
+                histContent: '',
+                histStartDate: '', // 취득일
+                histEndDate: '',   // 자격증은 종료일 없음
+            };
+            // personHistories 배열에 추가
+            setProfileData(prev => ({
+                ...prev,
+                personHistories: [...prev.personHistories, newItem]
+            }));
+        } else if (field === 'training') { // 교육 추가
+            newItem = {
+                id: tempId,
+                complDivCode: COMPLETE_DIV_CODES.TRAINING,
+                complOrgName: '',
+                complName: '',
+                complDate: '', // 종료일
+                startDate: '', // UI 편의상
+            };
+            // training 배열에 추가 (추후 백엔드 전송 시 completes로 통합)
+            setProfileData(prev => ({
+                ...prev,
+                training: [...prev.training, newItem]
+            }));
+        } else if (field === 'techSkills') {
+            newItem = {
+                id: tempId,
+                category: TECH_CATEGORIES[0].value,
                 skill: '',
-                level: SKILL_LEVELS[1] // '중'으로 기본 설정
-            });
+                level: SKILL_LEVELS[1]
+            };
+            setProfileData(prev => ({
+                ...prev,
+                techSkills: [...prev.techSkills, newItem]
+            }));
         }
-
-        setProfileData(prev => ({
-            ...prev,
-            [field]: [...prev[field], newItem]
-        }));
     };
 
     const removeItem = (field, index) => {
@@ -199,7 +249,6 @@ const ProfilePage = () => {
         }));
     };
 
-    // --- 카카오 주소 검색 API 관련 코드 시작 (회원가입 로직 반영) ---
     const handleAddressSearch = () => {
         if (!isDaumPostcodeLoaded || !window.daum || !window.daum.Postcode) {
             alert('주소 검색 API가 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.');
@@ -237,13 +286,15 @@ const ProfilePage = () => {
             }
         }).open();
     };
-    // --- 카카오 주소 검색 API 관련 코드 끝 ---
 
     const handleSave = () => {
         setIsEditing(false);
         alert('프로필이 저장되었습니다.');
         // TODO: 여기에 실제 저장 (API 호출 등) 로직을 추가
-        // console.log("Saving profile data:", profileData);
+        // 백엔드로 전송할 데이터 구조를 최종적으로 변환해야 할 수 있음.
+        // 예를 들어, training 배열을 completes 배열에 complDivCode: 'TRAINING'으로 추가하거나,
+        // 별도의 DTO로 묶어서 전송하는 방식 고려.
+        console.log("Saving profile data:", profileData);
     };
 
     const handleCancel = () => {
@@ -299,7 +350,7 @@ const ProfilePage = () => {
                         <div className="form-grid">
                             <div className="form-group">
                                 <label>성명</label>
-                                <input type="text" value={profileData.name} disabled className="input-disabled" />
+                                <input type="text" value={`${profileData.lastName}${profileData.firstName}`} disabled className="input-disabled" />
                             </div>
                             <div className="form-group">
                                 <label>성별</label>
@@ -307,18 +358,30 @@ const ProfilePage = () => {
                             </div>
                             <div className="form-group">
                                 <label>생년월일</label>
-                                <input type="date" value={profileData.birthDate} disabled className="input-disabled" />
+                                <input
+                                    type="date"
+                                    value={profileData.birthday}
+                                    onChange={(e) => handleInputChange('birthday', e.target.value)}
+                                    disabled={!isEditing}
+                                    className={isEditing ? '' : 'input-readonly'}
+                                />
                             </div>
                             <div className="form-group">
                                 <label>소속</label>
-                                <input type="text" value={profileData.department} disabled className="input-disabled" />
+                                <input
+                                    type="text"
+                                    value={profileData.department}
+                                    onChange={(e) => handleInputChange('department', e.target.value)}
+                                    disabled={!isEditing}
+                                    className={isEditing ? '' : 'input-readonly'}
+                                />
                             </div>
                             <div className="form-group">
                                 <label>근무경력</label>
                                 <input
                                     type="text"
-                                    value={profileData.workExperience}
-                                    onChange={(e) => handleInputChange('workExperience', e.target.value)}
+                                    value={profileData.workCareer}
+                                    onChange={(e) => handleInputChange('workCareer', e.target.value)}
                                     disabled={!isEditing}
                                     className={isEditing ? '' : 'input-readonly'}
                                 />
@@ -336,14 +399,15 @@ const ProfilePage = () => {
                             <div className="form-group">
                                 <label>기술등급</label>
                                 <select
-                                    value={profileData.techGrade}
-                                    onChange={(e) => handleInputChange('techGrade', e.target.value)}
+                                    value={profileData.abilityLevel}
+                                    onChange={(e) => handleInputChange('abilityLevel', e.target.value)}
                                     disabled={!isEditing}
                                     className={isEditing ? '' : 'input-readonly'}
                                 >
-                                    <option value="A급">A급</option>
-                                    <option value="B급">B급</option>
-                                    <option value="C급">C급</option>
+                                    <option value="초급">초급</option>
+                                    <option value="중급">중급</option>
+                                    <option value="고급">고급</option>
+                                    <option value="특급">특급</option>
                                 </select>
                             </div>
                             {/* 주소 관련 필드 시작 */}
@@ -357,14 +421,14 @@ const ProfilePage = () => {
                                         value={profileData.zipNo}
                                         placeholder="우편번호"
                                         maxLength="5"
-                                        readOnly // 수동 입력 방지 (주소 검색으로만 입력)
-                                        disabled={!isEditing} // 편집 모드에서만 활성화 (버튼과 함께)
+                                        readOnly
+                                        disabled={!isEditing}
                                     />
                                     <button
                                         type="button"
                                         onClick={handleAddressSearch}
                                         className="search-button"
-                                        disabled={!isDaumPostcodeLoaded || !isEditing} // API 로딩 전, 편집 모드 아닐 때 비활성화
+                                        disabled={!isDaumPostcodeLoaded || !isEditing}
                                     >
                                         주소검색
                                     </button>
@@ -378,7 +442,7 @@ const ProfilePage = () => {
                                     name="address"
                                     value={profileData.address}
                                     placeholder="주소를 검색하여 입력됩니다"
-                                    readOnly // 수동 입력 방지 (주소 검색으로만 입력)
+                                    readOnly
                                     disabled={!isEditing}
                                 />
                             </div>
@@ -420,117 +484,142 @@ const ProfilePage = () => {
                                     </label>
                                 </div>
                             </div>
-                            {/* 주소 관련 필드 끝 */}
                         </div>
                     </div>
 
-                    {/* 학력사항 */}
+                    {/* 학력사항 - COMPLETE_TB 매핑 */}
                     <div className="profile-section">
                         <div className="section-header">
                             <h2>학력사항</h2>
                             {isEditing && (
-                                <button className="btn-add" onClick={() => addItem('education')}>
+                                <button className="btn-add" onClick={() => addItem('completes')}>
                                     + 추가
                                 </button>
                             )}
                         </div>
-                        {profileData.education.map((edu, index) => (
-                            <div key={edu.id || index} className="dynamic-item">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>시작일자</label>
-                                        <input
-                                            type="date"
-                                            value={edu.startDate}
-                                            onChange={(e) => handleInputChange('education', e.target.value, index, 'startDate')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
+                        {/* profileData.completes 배열에서 education 타입만 필터링하여 렌더링 */}
+                        {profileData.completes
+                            .filter(item => item.complDivCode === COMPLETE_DIV_CODES.EDUCATION)
+                            .map((edu, index) => (
+                                <div key={edu.id || index} className="dynamic-item">
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>시작일자</label>
+                                            <input
+                                                type="date"
+                                                value={edu.startDate} // UI용 시작일
+                                                onChange={(e) => handleInputChange('completes', e.target.value, index, 'startDate')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>졸업일자</label>
+                                            <input
+                                                type="date"
+                                                value={edu.complDate} // DB에 매핑될 필드: COMPL_DATE
+                                                onChange={(e) => handleInputChange('completes', e.target.value, index, 'complDate')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group full-width">
+                                            <label>학교명</label>
+                                            <input
+                                                type="text"
+                                                value={edu.complOrgName} // DB에 매핑될 필드: COMPL_ORG_DIV_NAME
+                                                onChange={(e) => handleInputChange('completes', e.target.value, index, 'complOrgName')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group full-width">
+                                            <label>학력내용</label>
+                                            <input
+                                                type="text"
+                                                value={edu.complName} // DB에 매핑될 필드: COMPL_NAME
+                                                onChange={(e) => handleInputChange('completes', e.target.value, index, 'complName')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label>종료일자</label>
-                                        <input
-                                            type="date"
-                                            value={edu.endDate}
-                                            onChange={(e) => handleInputChange('education', e.target.value, index, 'endDate')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
-                                    <div className="form-group full-width">
-                                        <label>학력내용</label>
-                                        <input
-                                            type="text"
-                                            value={edu.content}
-                                            onChange={(e) => handleInputChange('education', e.target.value, index, 'content')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
+                                    {isEditing && profileData.completes.filter(item => item.complDivCode === COMPLETE_DIV_CODES.EDUCATION).length > 1 && (
+                                        <button className="btn-remove" onClick={() => removeItem('completes', index)}>
+                                            삭제
+                                        </button>
+                                    )}
                                 </div>
-                                {isEditing && profileData.education.length > 1 && (
-                                    <button className="btn-remove" onClick={() => removeItem('education', index)}>
-                                        삭제
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                            ))}
                     </div>
 
-                    {/* 경력사항 */}
+                    {/* 경력사항 - PERSON_HISTORY_TB 매핑 */}
                     <div className="profile-section">
                         <div className="section-header">
                             <h2>경력사항</h2>
                             {isEditing && (
-                                <button className="btn-add" onClick={() => addItem('career')}>
+                                <button className="btn-add" onClick={() => addItem('personHistories')}>
                                     + 추가
                                 </button>
                             )}
                         </div>
-                        {profileData.career.map((career, index) => (
-                            <div key={career.id || index} className="dynamic-item">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>시작일자</label>
-                                        <input
-                                            type="date"
-                                            value={career.startDate}
-                                            onChange={(e) => handleInputChange('career', e.target.value, index, 'startDate')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
+                        {/* profileData.personHistories 배열에서 career 타입만 필터링하여 렌더링 */}
+                        {profileData.personHistories
+                            .filter(item => item.hstDivCode === PERSON_HISTORY_DIV_CODES.CAREER)
+                            .map((career, index) => (
+                                <div key={career.id || index} className="dynamic-item">
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>시작일자</label>
+                                            <input
+                                                type="date"
+                                                value={career.histStartDate} // DB에 매핑될 필드: HIST_START_DATE
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'histStartDate')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>종료일자</label>
+                                            <input
+                                                type="date"
+                                                value={career.histEndDate} // DB에 매핑될 필드: HIST_END_DATE
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'histEndDate')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group full-width">
+                                            <label>회사명</label>
+                                            <input
+                                                type="text"
+                                                value={career.hstOrgName} // DB에 매핑될 필드: HST_ORG_NAME
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'hstOrgName')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group full-width">
+                                            <label>경력내용</label>
+                                            <input
+                                                type="text"
+                                                value={career.histContent} // DB에 매핑될 필드: HIST_CONTENT
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'histContent')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label>종료일자</label>
-                                        <input
-                                            type="date"
-                                            value={career.endDate}
-                                            onChange={(e) => handleInputChange('career', e.target.value, index, 'endDate')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
-                                    <div className="form-group full-width">
-                                        <label>경력내용</label>
-                                        <input
-                                            type="text"
-                                            value={career.content}
-                                            onChange={(e) => handleInputChange('career', e.target.value, index, 'content')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
+                                    {isEditing && profileData.personHistories.filter(item => item.hstDivCode === PERSON_HISTORY_DIV_CODES.CAREER).length > 1 && (
+                                        <button className="btn-remove" onClick={() => removeItem('personHistories', index)}>
+                                            삭제
+                                        </button>
+                                    )}
                                 </div>
-                                {isEditing && profileData.career.length > 1 && (
-                                    <button className="btn-remove" onClick={() => removeItem('career', index)}>
-                                        삭제
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                            ))}
                     </div>
 
-                    {/* 자격증 */}
+                    {/* 자격증 - PERSON_HISTORY_TB 매핑 */}
                     <div className="profile-section">
                         <div className="section-header">
                             <h2>자격증</h2>
@@ -540,50 +629,53 @@ const ProfilePage = () => {
                                 </button>
                             )}
                         </div>
-                        {profileData.certificates.map((cert, index) => (
-                            <div key={cert.id || index} className="dynamic-item">
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>인증기관</label>
-                                        <input
-                                            type="text"
-                                            value={cert.authority}
-                                            onChange={(e) => handleInputChange('certificates', e.target.value, index, 'authority')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
+                        {/* profileData.personHistories 배열에서 certificate 타입만 필터링하여 렌더링 */}
+                        {profileData.personHistories
+                            .filter(item => item.hstDivCode === PERSON_HISTORY_DIV_CODES.CERTIFICATE)
+                            .map((cert, index) => (
+                                <div key={cert.id || index} className="dynamic-item">
+                                    <div className="form-grid">
+                                        <div className="form-group">
+                                            <label>인증기관</label>
+                                            <input
+                                                type="text"
+                                                value={cert.hstOrgName} // DB에 매핑될 필드: HST_ORG_NAME
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'hstOrgName')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>자격증명</label>
+                                            <input
+                                                type="text"
+                                                value={cert.histContent} // DB에 매핑될 필드: HIST_CONTENT
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'histContent')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>취득일자</label>
+                                            <input
+                                                type="date"
+                                                value={cert.histStartDate} // DB에 매핑될 필드: HIST_START_DATE (자격증은 보통 시작일만)
+                                                onChange={(e) => handleInputChange('personHistories', e.target.value, index, 'histStartDate')}
+                                                disabled={!isEditing}
+                                                className={isEditing ? '' : 'input-readonly'}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label>자격증명</label>
-                                        <input
-                                            type="text"
-                                            value={cert.name}
-                                            onChange={(e) => handleInputChange('certificates', e.target.value, index, 'name')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>취득일자</label>
-                                        <input
-                                            type="date"
-                                            value={cert.date}
-                                            onChange={(e) => handleInputChange('certificates', e.target.value, index, 'date')}
-                                            disabled={!isEditing}
-                                            className={isEditing ? '' : 'input-readonly'}
-                                        />
-                                    </div>
+                                    {isEditing && profileData.personHistories.filter(item => item.hstDivCode === PERSON_HISTORY_DIV_CODES.CERTIFICATE).length > 1 && (
+                                        <button className="btn-remove" onClick={() => removeItem('personHistories', index)}>
+                                            삭제
+                                        </button>
+                                    )}
                                 </div>
-                                {isEditing && profileData.certificates.length > 1 && (
-                                    <button className="btn-remove" onClick={() => removeItem('certificates', index)}>
-                                        삭제
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                            ))}
                     </div>
 
-                    {/* 주요기술 (기술스펙) - ✅ 수정된 부분 */}
+                    {/* 주요기술 (기술스펙) */}
                     <div className="profile-section">
                         <div className="section-header">
                             <h2>주요기술 (기술스펙)</h2>
@@ -595,7 +687,7 @@ const ProfilePage = () => {
                         </div>
                         {profileData.techSkills.map((tech, index) => (
                             <div key={tech.id || index} className="dynamic-item tech-skill-item">
-                                <div className="form-grid tech-skill-grid"> {/* 새로운 클래스 적용 */}
+                                <div className="form-grid tech-skill-grid">
                                     <div className="form-group">
                                         <label>카테고리</label>
                                         <select
@@ -634,7 +726,6 @@ const ProfilePage = () => {
                                         </select>
                                     </div>
                                 </div>
-                                {/* 여기 조건 수정: profileData.techSkills.length > 1 일 때만 삭제 버튼 보이게 */}
                                 {isEditing && profileData.techSkills.length > 1 && (
                                     <button className="btn-remove" onClick={() => removeItem('techSkills', index)}>
                                         삭제
@@ -644,7 +735,7 @@ const ProfilePage = () => {
                         ))}
                     </div>
 
-                    {/* 교육기관 */}
+                    {/* 교육기관 - COMPLETE_TB 매핑 */}
                     <div className="profile-section">
                         <div className="section-header">
                             <h2>교육기관</h2>
@@ -654,15 +745,16 @@ const ProfilePage = () => {
                                 </button>
                             )}
                         </div>
-                        {profileData.training.map((training, index) => (
-                            <div key={training.id || index} className="dynamic-item">
+                        {/* profileData.training 배열에서 렌더링 (원래는 completes 배열에 포함되어야 함) */}
+                        {profileData.training.map((train, index) => (
+                            <div key={train.id || index} className="dynamic-item">
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label>교육기관명</label>
                                         <input
                                             type="text"
-                                            value={training.institution}
-                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'institution')}
+                                            value={train.complOrgName} // DB에 매핑될 필드: COMPL_ORG_DIV_NAME
+                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'complOrgName')}
                                             disabled={!isEditing}
                                             className={isEditing ? '' : 'input-readonly'}
                                         />
@@ -671,28 +763,28 @@ const ProfilePage = () => {
                                         <label>교육내용</label>
                                         <input
                                             type="text"
-                                            value={training.content}
-                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'content')}
+                                            value={train.complName} // DB에 매핑될 필드: COMPL_NAME
+                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'complName')}
                                             disabled={!isEditing}
                                             className={isEditing ? '' : 'input-readonly'}
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>교육 시작일자</label>
+                                        <label>시작일자</label>
                                         <input
                                             type="date"
-                                            value={training.startDate}
+                                            value={train.startDate} // UI용 시작일
                                             onChange={(e) => handleInputChange('training', e.target.value, index, 'startDate')}
                                             disabled={!isEditing}
                                             className={isEditing ? '' : 'input-readonly'}
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>교육 종료일자</label>
+                                        <label>종료일자</label>
                                         <input
                                             type="date"
-                                            value={training.endDate}
-                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'endDate')}
+                                            value={train.complDate} // DB에 매핑될 필드: COMPL_DATE
+                                            onChange={(e) => handleInputChange('training', e.target.value, index, 'complDate')}
                                             disabled={!isEditing}
                                             className={isEditing ? '' : 'input-readonly'}
                                         />

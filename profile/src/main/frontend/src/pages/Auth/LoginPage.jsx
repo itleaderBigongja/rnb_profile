@@ -46,30 +46,33 @@ const LoginPage = () => {
         console.log('계정 저장 여부:', rememberMe);
 
         try {
-            // 백엔드 로그인 API의 URL.
-            const response = await fetch('http://localhost:8081/api/login', {
+            // 백엔드 API 엔드포인트에 맞게 수정: /profile/api/login
+            // war로 배포할 때 profile.war로 배포를 했기 때문에 앞에 /profile 경로를 추가
+            // fetch : http://192.168.0.25:8080/profile/api/login'
+            // fetch : http://192.168.227.131:8080/profile/api/login'
+            // fetch : http://192.168.1.181:8080/profile/api/login'
+            const response = await fetch('http://192.168.1.181:8080/profile/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(loginData), // `loginData` 객체를 JSON 문자열로 변환하여 요청 본문에 포함
+                body: JSON.stringify(loginData),
             });
 
             if (response.ok) {
-                const data = await response.json(); // 성공 응답의 JSON 본문을 파싱
+                const data = await response.json();
                 console.log('백엔드로부터 받은 로그인 성공 응답:', data);
-                alert(data.message || "로그인 성공!");
+                alert(data.message || '로그인 성공!');
                 localStorage.setItem('token', data.token);
-                navigate('/main'); // 로그인 성공 시, `/main` 경로로 페이지 이동
+                navigate('/main'); // 로그인 성공 시 이동
             } else {
-                const errorData = await response.json(); // 에러 응답의 JSON 본문을 파싱
+                const errorData = await response.json();
                 console.error('백엔드로부터 받은 로그인 실패 응답:', response.status, errorData);
                 alert(`로그인 실패: ${errorData.message || '아이디 또는 비밀번호를 확인해주세요.'}`);
             }
         } catch (error) {
             console.error('로그인 요청 중 네트워크 오류 발생:', error);
             alert('로그인 요청 중 네트워크 오류가 발생했습니다. 서버가 실행 중인지 확인해주세요.');
-            // navigate('/error')   // 실패 시, /error 경로로 페이지 이동
         }
     };
 
@@ -82,7 +85,7 @@ const LoginPage = () => {
         <div className="login-container">
             <div className="login-form-wrapper">
                 <div className="logo-container">
-                    <img src="/src/assets/images/rnbsoft_logo.jpg"
+                    <img src="/images/rnbsoft_logo.jpg"
                          alt="R&B 알엔비소프트 로고"
                          className="logo-image"/>
                 </div>

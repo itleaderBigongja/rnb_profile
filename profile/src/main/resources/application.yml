@@ -1,15 +1,28 @@
 server:
-  port: 8081
+  port: 8080
+  servlet:
+    context-path: /profile
 
 spring:
   application:
     name: profile
 
+
+# 테더링 IP : jdbc:oracle:thin:@//192.168.227.131:1521/ORCLPDB1
+# HOME IP : jdbc:oracle:thin:@//192.168.0.25:1521/ORCLPDB1
+# Company IP : jdbc:oracle:thin:@//192.168.1.181:1521/ORCLPDB1
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:XE
+    url: jdbc:oracle:thin:@//192.168.1.181:1521/ORCLPDB1
     username: crnb001
     password: rnb6707
     driver-class-name: oracle.jdbc.OracleDriver
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
   jpa:
     hibernate:

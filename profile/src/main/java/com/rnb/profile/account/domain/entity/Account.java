@@ -1,5 +1,6 @@
 package com.rnb.profile.account.domain.entity;
 
+import com.rnb.profile.profile.domain.entity.ProjectHst;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime; // LocalDateTime import
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ACCOUNT_TB")
@@ -46,8 +49,16 @@ public class Account {
     @Column(name = "LAST_UPDATE_ID", length = 60)
     private String lastUpdateId;
 
+
+    // 사원테이블과 1:1 매핑
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Employee employee;
+
+    // 프로젝트이력과 1:N 매핑
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 지연 로딩 권장
+    private List<ProjectHst> projectHistories = new ArrayList<>();
+
+
 
     @Builder
     public Account(String id, String password, String email, String firstCreateId) {

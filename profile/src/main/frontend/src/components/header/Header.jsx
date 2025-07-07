@@ -50,7 +50,7 @@ const Header = () => {
             <div className="header-left">
                 <div className="logo-section">
                     <div className="header-logo">
-                        <img src="/src/assets/images/rnbsoft_logo2.jpg"
+                        <img src="/images/rnbsoft_logo2.jpg"
                              alt="R&B 알엔비소프트 로고"
                              className="logo-image"/>
                     </div>
@@ -71,7 +71,7 @@ const Header = () => {
             <div className="header-right">
                 <div className="user-profile">
                     <div className="profile-avatar" onClick={toggleDropdown}>
-                        <img src="/src/assets/images/rnbsoft_logo.jpg" alt="User Avatar" className="avatar-image" />
+                        <img src="/images/rnbsoft_logo.jpg" alt="User Avatar" className="avatar-image" />
                     </div>
                     {isDropdownOpen && (
                         <div className="dropdown-menu" ref={dropdownRef}>

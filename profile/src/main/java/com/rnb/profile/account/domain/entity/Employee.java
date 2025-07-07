@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 @Table(name = "EMPLOYEE_TB")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Employee {
 
     @Id

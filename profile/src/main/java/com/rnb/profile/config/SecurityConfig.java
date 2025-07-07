@@ -2,7 +2,6 @@ package com.rnb.profile.config;
 
 import com.rnb.profile.common.JwtTokenFilter;
 import com.rnb.profile.account.service.AuthService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,11 +26,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true) // 메서드 보안 활성화 (예: @PreAuthorize)
-//@RequiredArgsConstructor // <--- 이 어노테이션 제거
 public class SecurityConfig {
-
-    // private final JwtTokenFilter jwtTokenFilter; // <--- 제거
-    // private final AuthService authService;       // <--- 제거
 
     // PasswordEncoder 빈 정의
     @Bean
@@ -74,7 +69,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        // 기존 개발 환경 Origin인 localhost:3000 유지
+        // Nginx를 통해 접근하는 실제 프론트엔드의 Origin (VM의 IP 주소) 추가
+        // 테더링 IP : 192.168.227.131
+        // Home IP : 192.168.0.25
+        // Company IP : 192.168.1.181
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://192.168.1.181"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept"));
         configuration.setAllowCredentials(true);

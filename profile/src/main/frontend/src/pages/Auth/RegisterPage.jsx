@@ -154,7 +154,12 @@ const RegisterPage = () => {
 
         try {
             // 백엔드 API 엔드포인트에 맞게 수정: /api/account/check-id
-            const response = await fetch(`http://localhost:8081/api/account/check-id?id=${formData.id}`);
+            // war로 배포할 때 profile.war로 배포를 했기 때문에 앞에 /profile 경로를 추가
+
+            // fetch : http://192.168.0.25:8080/profile/api/account/check-id?id=${formData.id}`);
+            // fetch : http://192.168.227.131:8080/profile/api/account/check-id?id=${formData.id}`);
+            // fetch : http://192.168.1.181:8080/profile/api/account/check-id?id=${formData.id}`);
+            const response = await fetch(`http://192.168.1.181:8080/profile/api/account/check-id?id=${formData.id}`);
 
             if (response.ok) {
                 const data = await response.json(); // 먼저 선언
@@ -306,7 +311,11 @@ const RegisterPage = () => {
 
         try {
             // 세 번째: 백엔드 구현 - 회원가입 API 호출
-            const response = await fetch('http://localhost:8081/api/account/register', { // Spring Boot 서버 포트 8081, 엔드포인트 /api/account/register
+            // war로 배포할 때 profile.war로 배포를 했기 때문에 앞에 /profile 경로를 추가
+            // fetch : http://192.168.0.25:8080/profile/api/account/register'
+            // fetch : http://192.168.227.131:8080/profile/api/account/register'
+            // fetch : http://192.168.1.181:8080/profile/api/account/register'
+            const response = await fetch('http://192.168.1.181:8080/profile/api/account/register', { // Spring Boot 서버 포트 8080, 엔드포인트 /api/account/register
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

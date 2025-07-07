@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -20,7 +20,7 @@ public class AccountController {
 
     // 아이디 중복 확인 엔드포인트
     // 프론트엔드: http://localhost:8081/api/account/check-id?userId={formData.id}
-    @GetMapping("/check-id")
+    @GetMapping("/account/check-id")
     public ResponseEntity<?> checkIdDuplication(@RequestParam("id") String id) {
         Map<String, Boolean> response = new HashMap<>();
         boolean isDuplicated = accountService.isUserIdDuplicated(id);
@@ -30,7 +30,7 @@ public class AccountController {
 
     // 회원가입 엔드포인트
     // 프론트엔드: http://localhost:8081/api/account/register (POST)
-    @PostMapping("/register")
+    @PostMapping("/account/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
         try {
             accountService.registerUser(request);
