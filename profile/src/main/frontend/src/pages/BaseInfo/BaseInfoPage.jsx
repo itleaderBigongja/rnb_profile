@@ -20,9 +20,9 @@ const BaseInfoPage = () => {
         name: '홍길동',
         position: '선임연구원',
         company: '알앤비소프트', // 회사는 고정값이거나 백엔드에서 가져올 값으로 가정
-        department: '연구개발팀',
+        department: '인력풀',
         email: 'hong.gildong@rnbsoft.co.kr',
-        phone: '010-1234-5678',
+        phone: '010-9983-0561',
         directPhone: '02-1234-5678',
         baseInfoImage: null, // 프로필 이미지 상태 추가
         // 여기에 추가적으로 필요한 프로필 정보 필드를 정의할 수 있습니다.
