@@ -32,6 +32,14 @@ pipline {
             }
         }
 
+        stage('Install sshpass') {
+            steps {
+                script {
+                    sh 'apt-get update && apt-get install -y sshpass'
+                }
+            }
+        }
+
         stage('Deploy React App and Nginx Config') {
             steps {
                 script {
