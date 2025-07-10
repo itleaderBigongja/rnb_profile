@@ -35,7 +35,11 @@ pipline {
         stage('Install sshpass') {
             steps {
                 script {
-                    sh 'apt-get update && apt-get install -y sshpass'
+                    // --- 수정된 부분: Docker agent에서 root 유저로 전환하여 apt-get 실행 ---
+                    docker.image('jenkins/jenkins:lts').inside('-u root') { // <-- 이 부분을 추가/수정
+                        sh 'apt-get update && apt-get install -y sshpass'
+                    }
+                    // --- 여기까지 ---
                 }
             }
         }

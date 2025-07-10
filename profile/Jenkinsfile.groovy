@@ -34,14 +34,14 @@ pipeline {
             }
         }
 
-        // --- 새로운 스테이지 추가 또는 기존 Deploy 스테이지 내부에 추가 ---
-        stage('Install Deployment Tools') { // 예시: sshpass, rsync 등 배포 도구 설치
+        stage('Install sshpass') {
             steps {
                 script {
-                    // Jenkins 컨테이너 내부에서 apt 업데이트 및 sshpass 설치
-                    sh 'apt-get update && apt-get install -y sshpass'
-                    // sudo를 사용하지 않는 이유는 Jenkins Docker 컨테이너 내부는 jenkins 유저가 root에 가까운 권한을 가지기 때문입니다.
-                    // 만약 permission denied 에러가 발생하면 agent { docker { image 'jenkins/jenkins:lts' args '-u root' } }를 고려해야 합니다.
+                    // --- 수정된 부분: Docker agent에서 root 유저로 전환하여 apt-get 실행 ---
+                    // 'jenkins/jenkins:lts' 이미지를 root 유저로 실행
+                    docker.image('jenkins/jenkins:lts').inside('-u root') { // <-- 이 부분을 추가/수정
+                        sh 'apt-get update && apt-get install -y sshpass'
+                    }
                 }
             }
         }
