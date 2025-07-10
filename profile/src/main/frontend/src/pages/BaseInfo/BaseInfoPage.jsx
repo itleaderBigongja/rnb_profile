@@ -18,7 +18,7 @@ const BaseInfoPage = () => {
     // 사용자 프로필 데이터 (초기값 설정)
     const [baseInfoData, setBaseInfoData] = useState({
         name: '홍길동',
-        position: '사원(곧 대리)',
+        position: '사원(4년차)',
         company: '알앤비소프트', // 회사는 고정값이거나 백엔드에서 가져올 값으로 가정
         department: '인력풀',
         email: 'hong.gildong@rnbsoft.co.kr',
