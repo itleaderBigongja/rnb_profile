@@ -11,7 +11,8 @@ pipeline {
         DEPLOY_WAR_NAME = 'profile.war'
 
         // 원격 서버 IP( 실제 Ubuntu 서버 IP로 변경 )
-        REMOTE_SERVER_IP = '192.168.1.181'
+        // REMOTE_SERVER_IP = '192.168.1.181'
+        REMOTE_SERVER_IP = '192.168.0.25'
 
         // 원격 서버의 Tomcat webapps 경로
         REMOTE_TOMCAT_WEBAPPS_DIR = '/opt/tomcat/webapps'
@@ -27,7 +28,7 @@ pipeline {
         stage('Build Java App') {
             steps {
                 // Spring Boot 프로젝트의 실제 빌드 루트 디렉토리로 이동하여 Maven 빌드 명령 실행
-                dir('./') { // Git 저장소 루트인 'profile' 디렉토리
+                dir('profile') { // <--- 이 부분을 수정
                     sh 'mvn clean package -DskipTests'
                 }
             }

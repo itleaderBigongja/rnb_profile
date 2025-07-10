@@ -5,7 +5,8 @@ pipline {
 
     // 파이프라인 전반에 걸쳐 사용될 환경 변수 정의
     environment {
-        REMOTE_SERVER_IP = '192.168.1.181' // 원격 서버 IP (실제 배포 서버 IP로 변경)
+        //REMOTE_SERVER_IP = '192.168.1.181' // 원격 서버 IP (실제 배포 서버 IP로 변경)
+        REMOTE_SERVER_IP = '192.168.0.25'
         REMOTE_FRONTEND_DIR = '/var/www/frontend' // React 앱이 배포될 원격 서버 디렉토리
         NGINX_CONF_SOURCE_PATH = 'profile/nginx/default.conf' // Git 저장소 내 Nginx 설정 파일 원본 경로
         NGINX_SITES_AVAILABLE_PATH = '/etc/nginx/sites-available/frontend.conf' // 원격 서버의 Nginx sites-available 디렉토리 내 설정 파일 경로 (원본)

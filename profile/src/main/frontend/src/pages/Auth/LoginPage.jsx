@@ -51,7 +51,7 @@ const LoginPage = () => {
             // fetch : http://192.168.0.25:8080/profile/api/login'
             // fetch : http://192.168.227.131:8080/profile/api/login'
             // fetch : http://192.168.1.181:8080/profile/api/login'
-            const response = await fetch('http://192.168.1.181:8080/profile/api/login', {
+            const response = await fetch('http://192.168.0.25:8080/profile/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

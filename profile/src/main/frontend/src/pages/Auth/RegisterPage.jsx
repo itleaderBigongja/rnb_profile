@@ -159,7 +159,7 @@ const RegisterPage = () => {
             // fetch : http://192.168.0.25:8080/profile/api/account/check-id?id=${formData.id}`);
             // fetch : http://192.168.227.131:8080/profile/api/account/check-id?id=${formData.id}`);
             // fetch : http://192.168.1.181:8080/profile/api/account/check-id?id=${formData.id}`);
-            const response = await fetch(`http://192.168.1.181:8080/profile/api/account/check-id?id=${formData.id}`);
+            const response = await fetch(`http://192.168.0.25:8080/profile/api/account/check-id?id=${formData.id}`);
 
             if (response.ok) {
                 const data = await response.json(); // 먼저 선언
@@ -315,7 +315,7 @@ const RegisterPage = () => {
             // fetch : http://192.168.0.25:8080/profile/api/account/register'
             // fetch : http://192.168.227.131:8080/profile/api/account/register'
             // fetch : http://192.168.1.181:8080/profile/api/account/register'
-            const response = await fetch('http://192.168.1.181:8080/profile/api/account/register', { // Spring Boot 서버 포트 8080, 엔드포인트 /api/account/register
+            const response = await fetch('http://192.168.0.25:8080/profile/api/account/register', { // Spring Boot 서버 포트 8080, 엔드포인트 /api/account/register
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

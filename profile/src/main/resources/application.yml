@@ -12,7 +12,7 @@ spring:
 # HOME IP : jdbc:oracle:thin:@//192.168.0.25:1521/ORCLPDB1
 # Company IP : jdbc:oracle:thin:@//192.168.1.181:1521/ORCLPDB1
   datasource:
-    url: jdbc:oracle:thin:@//192.168.1.181:1521/ORCLPDB1
+    url: jdbc:oracle:thin:@//192.168.0.25:1521/ORCLPDB1
     username: crnb001
     password: rnb6707
     driver-class-name: oracle.jdbc.OracleDriver
